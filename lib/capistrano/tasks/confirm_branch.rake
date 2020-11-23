@@ -35,29 +35,27 @@ namespace :confirm_branch do
 
   desc 'Confirms there are no pending commits to be pushed'
   task :check_unpushed_commits do
-    if fetch(:scm).to_s == 'git' &&
-      fetch(:check_unpushed_commits_before_deploy, true)
-      pending_commits = `git status`
+    fetch(:check_unpushed_commits_before_deploy, true)
+    pending_commits = `git status`
 
-      unless pending_commits[/Your branch is up.to.date/]
-        pending_commits = /(Your branch is ahead of '\S*' by \d commits?)/.
-          match(pending_commits).captures.first
+    unless pending_commits[/Your branch is up.to.date/]
+      pending_commits = /(Your branch is ahead of '\S*' by \d commits?)/.
+        match(pending_commits).captures.first
 
-        ui = HighLine.new
+      ui = HighLine.new
 
-        ui.say %{
-          ============ WARNING: Unpushed Commits Present ============
+      ui.say %{
+        ============ WARNING: Unpushed Commits Present ============
 
-          #{pending_commits}
+        #{pending_commits}
 
-          ===========================================================
+        ===========================================================
 
-        }
+      }
 
-        abort unless ui.agree(
-          "Do you wish to continue deploying?"
-        ) {|a| a.default = 'yes' }
-      end
+      abort unless ui.agree(
+        "Do you wish to continue deploying?"
+      ) {|a| a.default = 'yes' }
     end
   end
 
