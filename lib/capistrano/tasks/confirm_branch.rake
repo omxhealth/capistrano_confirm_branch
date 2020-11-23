@@ -39,7 +39,7 @@ namespace :confirm_branch do
     pending_commits = `git status`
 
     unless pending_commits[/Your branch is up.to.date/]
-      pending_commits = /(Your branch is ahead of '\S*' by \d commits?)/.
+      pending_commits = /(Your branch is ahead of '\S*' by \d+ commits?)/.
         match(pending_commits).captures.first
 
       ui = HighLine.new
