@@ -16,7 +16,7 @@ namespace :confirm_branch do
       end
     end
 
-    if deployed_branch != pending_deploy_branch
+    if deployed_branch.to_s != pending_deploy_branch.to_s
       deployed_branch = "<UNKNOWN>" if deployed_branch == ""
 
       ui.say %{
